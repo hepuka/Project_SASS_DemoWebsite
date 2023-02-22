@@ -1,0 +1,78 @@
+//Loop
+//bejárjuk a map-et
+@each $key, $val in $colors {
+  //text-valami osztály color tulajdonságához a megadott kulcs alapján hozzárendeli annak értékét
+
+  //tehát ha a html-ben egy elemnek a text-colors.kulcs osztály nevet adjuk akkor automatikusan hozzáadja és legenerálja annak az elemnek a color css-ét
+
+  .text-#{$key} {
+    color: $val;
+  }
+  /*   <span
+    class="text-primary"
+    > primary
+    text</span|<span
+    class="text-secondary"
+    > secondary
+    text</span|<span
+    class="text-error"
+    > error
+    text</span|<span
+    class="text-info"
+    > info
+    text</span| */
+
+  //hover készítése egy osztálynévhez - sudo selectorok használata
+  .text-hover-#{$key} {
+    &:hover {
+      color: $val;
+    }
+  }
+
+  //ugyanúgy a bg-valami nevezetű osztályhoz is legenerálja annak css-ét és hozzá is adja
+  .bg-#{$key} {
+    background-color: $val;
+  }
+
+  /*   <span class="bg-primary text-white">bg primary</span> |
+  <span class="bg-secondary text-white">bg secondary</span> |
+  <span class="bg-error text-white">bg error</span> |
+  <span class="bg-info text-white">bg info</span> | */
+
+  // light variations
+  //for ciklus a text-valami-light-valami osztály color tulajdonságának a generálására
+  //a szorzással és a 2 szín mxelésével egyre halványabb színeket kapunk
+
+  @if ($val != black and $val != white) {
+    @for $i from 1 through 9 {
+      .text-#{$key}-light-#{$i} {
+        color: mix(white, $val, $i * 10);
+      }
+      .text-hover-#{$key}-light-#{$i} {
+        &:hover {
+          color: mix(white, $val, $i * 10);
+        }
+      }
+      .bg-#{$key}-light-#{$i} {
+        background-color: mix(white, $val, $i * 10);
+      }
+    }
+
+    // dark variations
+    @for $i from 1 through 9 {
+      .text-#{$key}-dark-#{$i} {
+        color: mix(black, $val, $i * 10);
+      }
+
+      .text-hover-#{$key}-dark-#{$i} {
+        &:hover {
+          color: mix(black, $val, $i * 10);
+        }
+      }
+
+      .bg-#{$key}-dark-#{$i} {
+        background-color: mix(black, $val, $i * 10);
+      }
+    }
+  }
+}

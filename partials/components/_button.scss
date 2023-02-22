@@ -1,0 +1,54 @@
+//mixing használata kell, mivel a két gomb beállításainál több azonos is van
+//duplikálást ekl lehet vele kerülni
+
+//ezek ismétlődtek mindkét gombnál:
+/* text-decoration: none;
+cursor: pointer;
+display: inline-block;
+border: 0;
+padding: $base-padding $base-padding * 2;
+border-radius: $base-border-radius;
+ */
+
+//mixin-ben lévő beállításokat tudom importálni az @include-al ott ahol szeretném
+@mixin btn($bg-color: #e2e2e2) {
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  border: 0;
+  padding: $base-padding $base-padding * 2;
+  border-radius: $base-border-radius;
+  background-color: $bg-color;
+}
+
+.btn {
+  @include btn;
+}
+
+@each $key, $val in $colors {
+  .btn-#{$key} {
+    @include btn($val);
+    &:hover {
+      background-color: lighten($val, 5);
+    }
+  }
+
+  .btn-outlined-#{$key} {
+    @include btn(#fff);
+    border: $base-border-thickness solid $val;
+    &:hover {
+      background-color: $val;
+    }
+  }
+
+  .btn-complement-#{$key} {
+    @include btn($val);
+
+    //color tulajdonságra merghívjuk az elkészített függvényt
+    color: light-comp($val);
+    &:hover {
+      color: $val;
+      background-color: light-comp($val);
+    }
+  }
+}

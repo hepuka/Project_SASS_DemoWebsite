@@ -1,0 +1,43 @@
+
+videósorozat:
+https://www.youtube.com/watch?v=_kqN4hl9bGc&t=21s&ab_channel=TheNetNinja
+
+
+beépített live sass compiler használata kell. npm gulp nem szükséges
+
+
+npm package:
+ - npm init
+ - npm install gulp gulp-sass sass --save-dev
+ - gulpfile.js config fájlt elkészíteni
+
+- ha nem megy a gulp parancs:
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
+- gulp parancsot hagyni kell futni a terminalban, mert figyeli a scss-ben lévő változásokat
+
+- a változók kimentése egy külön scss fájlba, majd a fő index.scss fájlba importálni kell
+
+- ennek a fájnak _-kell kezdődnie, hogy a fordító ne vegye figyelembe és nem csináljon belőle css fájlt. Ez a fájl csak egy partial fájl az index.scss fájhoz
+
+- egyes elemek stílusai egymásbaágyazhatóak. Elsőnek a szülőelemnek elkészítjük a stílusát, majd ugyanabban a {}-ben belerakjuk azok gyerekelemeinek a stílusmeghatározásait is. Nem kell külön kezeli mint a sima vanilla css-ben
+
+
+
+gulpfile.js tartalma (ha kell):
+const { src, dest, watch, series } = require("gulp");
+const sass = require("gulp-sass")(require("sass"));
+const purgecss = require("gulp-purgecss");
+
+function buildStyles() {
+  return src("sass/**/*.scss")
+    .pipe(sass())
+    .pipe(purgecss({ content: ["*.html"] }))
+    .pipe(dest("css"));
+}
+
+function watchTask() {
+  watch(["sass/**/*.scss", "*.html"], buildStyles);
+}
+
+exports.default = series(buildStyles, watchTask);

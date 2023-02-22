@@ -1,0 +1,12 @@
+//saját függvény készítése, ami megkap egy színt
+
+@function light-comp($color) {
+  //egy változóra meghívjuk a beépített complement fv-t és átadjuk neki a kapott színt
+  $complement: complement($color);
+
+  //másik változóbra meghívjuk a beépített loghten fv-t, aminek megadjuk az előző változót és a % amennyivel világosabb legyen
+  $light-complement: lighten($complement, 50%);
+
+  //visszatérünk a 2. változó értékével(színével)
+  @return $light-complement;
+}
